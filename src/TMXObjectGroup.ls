@@ -41,19 +41,19 @@ package tmx
 
         private function parseObject(element:XMLElement):TMXObject
         {
-            var x = element.getNumberAttribute("x") as uint;
-            var y = element.getNumberAttribute("y") as uint;
+            var x = element.getNumberAttribute("x") as int;
+            var y = element.getNumberAttribute("y") as int;
 
             var child = element.firstChildElement();
 
             if (!child)
             {
-                var width = element.getNumberAttribute("width") as uint;
-                var height = element.getNumberAttribute("height") as uint;
+                var width = element.getNumberAttribute("width") as int;
+                var height = element.getNumberAttribute("height") as int;
                 var gidAttr = element.findAttribute("gid");
                 if (gidAttr)
                 {
-                    return new TMXTile(x, y, gidAttr.numberValue as int);
+                    return new TMXTileObject(x, y, gidAttr.numberValue as int);
                 }
                 else
                 {
@@ -62,8 +62,8 @@ package tmx
             }
             else if (child.getValue() == "ellipse")
             {
-                width = element.getNumberAttribute("width") as uint;
-                height = element.getNumberAttribute("height") as uint;
+                width = element.getNumberAttribute("width") as int;
+                height = element.getNumberAttribute("height") as int;
                 return new TMXEllipse(x, y, width, height);
             }
             else if (child.getValue() == "polygon")
@@ -105,11 +105,11 @@ package tmx
 
     public class TMXObject
     {
-        public var x:uint;
-        public var y:uint;
+        public var x:int;
+        public var y:int;
         public var type:TMXObjectType;
 
-        public function TMXObject(x:uint, y:uint)
+        public function TMXObject(x:int, y:int)
         {
             this.x = x;
             this.y = y;
@@ -118,10 +118,10 @@ package tmx
 
     public class TMXRectangle extends TMXObject
     {
-        public var width:uint;
-        public var height:uint;
+        public var width:int;
+        public var height:int;
 
-        public function TMXRectangle(x:uint, y:uint, width:uint, height:uint)
+        public function TMXRectangle(x:int, y:int, width:int, height:int)
         {
             super(x, y);
             this.type = TMXObjectType.RECTANGLE;
@@ -132,10 +132,10 @@ package tmx
 
     public class TMXEllipse extends TMXObject
     {
-        public var width:uint;
-        public var height:uint;
+        public var width:int;
+        public var height:int;
 
-        public function TMXEllipse(x:uint, y:uint, width:uint, height:uint)
+        public function TMXEllipse(x:int, y:int, width:int, height:int)
         {
             super(x, y);
             this.type = TMXObjectType.ELLIPSE;
@@ -144,11 +144,11 @@ package tmx
         }
     }
 
-    public class TMXTile extends TMXObject
+    public class TMXTileObject extends TMXObject
     {
         public var gid:int;
 
-        public function TMXTile(x:uint, y:uint, gid:int)
+        public function TMXTileObject(x:int, y:int, gid:int)
         {
             super(x, y);
             this.type = TMXObjectType.TILE;
@@ -160,7 +160,7 @@ package tmx
     {
         public var points:Vector.<int> = [];
 
-        public function TMXPolygon(x:uint, y:uint, points:Vector.<int>)
+        public function TMXPolygon(x:int, y:int, points:Vector.<int>)
         {
             super(x, y);
             this.type = TMXObjectType.POLYGON;
@@ -172,7 +172,7 @@ package tmx
     {
         public var points:Vector.<int> = [];
 
-        public function TMXPolyLine(x:uint, y:uint, points:Vector.<int>)
+        public function TMXPolyLine(x:int, y:int, points:Vector.<int>)
         {
             super(x, y);
             this.type = TMXObjectType.POLYLINE;

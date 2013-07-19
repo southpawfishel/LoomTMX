@@ -34,7 +34,7 @@ package
             label.y = stage.stageHeight / 2 - 100;
             stage.addChild(label);
 
-            var tmx:TMXDocument = new TMXDocument("assets/tiled_examples/object_test.tmx");
+            var tmx:TMXDocument = new TMXDocument("assets/tiled_examples/desert.tmx");
             tmx.onTilesetParsed += onTilesetParsed;
             tmx.onLayerParsed += onLayerParsed;
             tmx.onObjectGroupParsed += onObjectGroupParsed;
@@ -48,7 +48,6 @@ package
         {
             trace("parsed tileset:");
             trace("name: " + tileset.name);
-            trace("source: " + tileset.source);
             trace("firstgid: " + tileset.firstgid);
             trace("tilewidth: " + tileset.tilewidth);
             trace("tileheight: " + tileset.tileheight);
@@ -101,7 +100,7 @@ package
                         trace("ellipse [" + ellipse.x + " " + ellipse.y + " " + ellipse.width + " " + ellipse.height + "]");
                         break;
                     case TMXObjectType.TILE:
-                        var tile = object as TMXTile;
+                        var tile = object as TMXTileObject;
                         trace("tile [" + tile.x + " " + tile.y + " " + tile.gid + "]");
                         break;
                     case TMXObjectType.POLYGON:

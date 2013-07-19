@@ -5,17 +5,17 @@ package tmx
     class TMXLayer
     {
         public var name:String;
-        public var x:uint = 0;
-        public var y:uint = 0;
-        public var width:uint;
-        public var height:uint;
+        public var x:int = 0;
+        public var y:int = 0;
+        public var width:int;
+        public var height:int;
         public var opacity:Number = 1;
         public var visible:Boolean = true;
         public var tiles:Vector.<int> = [];
 
         public var properties:Dictionary.<String, String> = {};
 
-        public function TMXLayer(element:XMLElement, mapWidth:uint, mapHeight:uint)
+        public function TMXLayer(element:XMLElement, mapWidth:int, mapHeight:int)
         {
             name = element.getAttribute("name");
             var xAttr = element.findAttribute("x");

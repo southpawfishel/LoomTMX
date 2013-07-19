@@ -7,7 +7,7 @@ package tmx
     {
         public var data:Vector.<int> = [];
 
-        public function TMXData(element:XMLElement, width:uint, height:uint)
+        public function TMXData(element:XMLElement, width:int, height:int)
         {
             var encoding:String = element.getAttribute("encoding");
             var compression:String = element.getAttribute("compression");
@@ -28,9 +28,9 @@ package tmx
                     Debug.assert(false, "gzip compression not yet supported!");
                 }
 
-                const FLIPPED_HORIZONTALLY_FLAG:uint = 0x80000000;
-                const FLIPPED_VERTICALLY_FLAG:uint = 0x40000000;
-                const FLIPPED_DIAGONALLY_FLAG:uint = 0x20000000;
+                const FLIPPED_HORIZONTALLY_FLAG:int = 0x80000000;
+                const FLIPPED_VERTICALLY_FLAG:int = 0x40000000;
+                const FLIPPED_DIAGONALLY_FLAG:int = 0x20000000;
 
                 for (var i:int = 0; i < bytes.length; i += 4)
                 {

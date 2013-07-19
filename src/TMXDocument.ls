@@ -18,10 +18,10 @@ package tmx
         // Map level properties
         public var version:Number;
         public var orientation:String;
-        public var width:uint;
-        public var height:uint;
-        public var tileWidth:uint;
-        public var tileHeight:uint;
+        public var width:int;
+        public var height:int;
+        public var tileWidth:int;
+        public var tileHeight:int;
         public var backgroundcolor:String;
 
         public var properties:Dictionary.<String, String> = {};
@@ -75,10 +75,10 @@ package tmx
 
             version = root.getNumberAttribute("version");
             orientation = root.getAttribute("orientation");
-            width = root.getNumberAttribute("width") as uint;
-            height = root.getNumberAttribute("height") as uint;
-            tileWidth = root.getNumberAttribute("tilewidth") as uint;
-            tileHeight = root.getNumberAttribute("tileheight") as uint;
+            width = root.getNumberAttribute("width") as int;
+            height = root.getNumberAttribute("height") as int;
+            tileWidth = root.getNumberAttribute("tilewidth") as int;
+            tileHeight = root.getNumberAttribute("tileheight") as int;
             backgroundcolor = root.getAttribute("backgroundcolor");
 
             var nextChild:XMLElement = root.firstChildElement();
@@ -86,7 +86,7 @@ package tmx
             {
                 if (nextChild.getValue() == "tileset")
                 {
-                    var tileset:TMXTileSet = new TMXTileSet(nextChild);
+                    var tileset:TMXTileSet = new TMXTileSet(_filename, nextChild);
                     onTilesetParsed(_filename, tileset);
                 }
                 else if (nextChild.getValue() == "layer")
