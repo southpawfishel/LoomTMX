@@ -25,6 +25,8 @@ package tmx
                 }
                 else if (compression == "gzip")
                 {
+                    // TODO: Support gzip.  Ideally, this would be done by adding
+                    // gzip deflate to ByteArray in the native SDK
                     Debug.assert(false, "gzip compression not yet supported!");
                 }
 
@@ -63,7 +65,15 @@ package tmx
             }
             else
             {
-                Debug.assert(false, "Unencoded data is currently unsupported!");
+                var nextChild:XMLElement = element.firstChildElement();
+                while (nextChild)
+                {
+                    if (nextChild.getValue() == "tile")
+                    {
+                        data.pushSingle(nextChild.getNumberAttribute("gid") as int);
+                    }
+                    nextChild = nextChild.nextSiblingElement();
+                }
             }
         }
     }
