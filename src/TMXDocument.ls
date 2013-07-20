@@ -5,6 +5,7 @@ package tmx
     import system.xml.*;
 
     public delegate TMXUpdatedCallback(file:String, document:TMXDocument);
+    public delegate TMXLoadCompleteCallback(file:String, document:TMXDocument);
     public delegate TMXTilesetParsedCallback(file:String, tileset:TMXTileSet);
     public delegate TMXLayerParsedCallback(file:String, layer:TMXLayer);
     public delegate TMXObjectGroupParsedCallback(file:String, objectGroup:TMXObjectGroup);
@@ -27,6 +28,7 @@ package tmx
         public var properties:Dictionary.<String, String> = {};
 
         public var onTMXUpdated:TMXUpdatedCallback = new TMXUpdatedCallback();
+        public var onTMXLoadComplete:TMXLoadCompleteCallback = new TMXLoadCompleteCallback();
         public var onTilesetParsed:TMXTilesetParsedCallback = new TMXTilesetParsedCallback();
         public var onLayerParsed:TMXLayerParsedCallback = new TMXLayerParsedCallback();
         public var onObjectGroupParsed:TMXObjectGroupParsedCallback = new TMXObjectGroupParsedCallback();
@@ -81,6 +83,8 @@ package tmx
             tileHeight = root.getNumberAttribute("tileheight") as int;
             backgroundcolor = root.getAttribute("backgroundcolor");
 
+            onTMXUpdated(_filename, this);
+
             var nextChild:XMLElement = root.firstChildElement();
             while (nextChild)
             {
@@ -112,7 +116,7 @@ package tmx
                 nextChild = nextChild.nextSiblingElement();
             }
 
-            onTMXUpdated(_filename, this);
+            onTMXLoadComplete(_filename, this);
         }
     }
 }

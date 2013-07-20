@@ -17,6 +17,7 @@ package tmx
         public var image:TMXImage = null;
         public var tileoffset:TMXTileOffset = null;
         public var tiles:Vector.<TMXTile> = [];
+        public var terrainTypes:Vector.<TMXTerrain> = [];
 
         private var _parentFile:String = null;
 
@@ -62,17 +63,17 @@ package tmx
             var nextChild:XMLElement = element.firstChildElement();
             while (nextChild)
             {
-                if (nextChild.getValue() == "tileoffset")
-                {
-                    tileoffset = new TMXTileOffset(nextChild);
-                }
-                else if (nextChild.getValue() == "image")
+                if (nextChild.getValue() == "image")
                 {
                     image = new TMXImage(nextChild);
                 }
+                else if (nextChild.getValue() == "tileoffset")
+                {
+                    tileoffset = new TMXTileOffset(nextChild);
+                }
                 else if (nextChild.getValue() == "terraintypes")
                 {
-                    trace("terraintypes not yet supported!");
+                    parseTerrainTypes(nextChild);
                 }
                 else if (nextChild.getValue() == "tile")
                 {
@@ -86,17 +87,19 @@ package tmx
                 nextChild = nextChild.nextSiblingElement();
             }
         }
-    }
 
-    public class TMXTileOffset
-    {
-        public var x:int;
-        public var y:int;
-
-        public function TMXTileOffset(element:XMLElement)
+        private function parseTerrainTypes(element:XMLElement)
         {
-            x = element.getNumberAttribute("x") as int;
-            y = element.getNumberAttribute("y") as int;
+            var nextChild:XMLElement = element.firstChildElement();
+            while (nextChild)
+            {
+                if (nextChild.getValue() == "terrain")
+                {
+                    terrainTypes.pushSingle(new TMXTerrain(nextChild));
+                }
+
+                nextChild = nextChild.nextSiblingElement();
+            }
         }
     }
 
@@ -120,6 +123,18 @@ package tmx
         }
     }
 
+    public class TMXTileOffset
+    {
+        public var x:int;
+        public var y:int;
+
+        public function TMXTileOffset(element:XMLElement)
+        {
+            x = element.getNumberAttribute("x") as int;
+            y = element.getNumberAttribute("y") as int;
+        }
+    }
+
     public class TMXTile
     {
         public var id:int;
@@ -140,6 +155,18 @@ package tmx
                     terrain.pushSingle(terrainString.toNumber() as int);
                 }
             }
+        }
+    }
+
+    public class TMXTerrain
+    {
+        public var name:String;
+        public var tile:int;
+
+        public function TMXTerrain(element:XMLElement)
+        {
+            name = element.getAttribute("name");
+            tile = element.getNumberAttribute("tile") as int;
         }
     }
 }

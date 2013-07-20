@@ -40,34 +40,76 @@ package
             tmx.onObjectGroupParsed += onObjectGroupParsed;
             tmx.onPropertiesParsed += onPropertiesParsed;
             tmx.onTMXUpdated += onTMXUpdated;
+            tmx.onTMXLoadComplete += onTMXLoadComplete;
             tmx.load();
 
+        }
+
+        public function onTMXUpdated(file:String, tmx:TMXDocument):void
+        {
+            trace("started parsing tmx: " + file);
+
+            trace("\tversion: " + tmx.version);
+            trace("\torientation: " + tmx.orientation);
+            trace("\twidth: " + tmx.width);
+            trace("\theight: " + tmx.height);
+            trace("\ttileWidth: " + tmx.tileWidth);
+            trace("\ttileHeight: " + tmx.tileHeight);
+            trace("\tbackgroundcolor: " + tmx.backgroundcolor);
         }
 
         public function onTilesetParsed(file:String, tileset:TMXTileSet):void
         {
             trace("parsed tileset:");
-            trace("name: " + tileset.name);
-            trace("firstgid: " + tileset.firstgid);
-            trace("tilewidth: " + tileset.tilewidth);
-            trace("tileheight: " + tileset.tileheight);
-            trace("spacing: " + tileset.spacing);
-            trace("margin: " + tileset.margin);
+            trace("\tname: " + tileset.name);
+            trace("\tfirstgid: " + tileset.firstgid);
+            trace("\ttilewidth: " + tileset.tilewidth);
+            trace("\ttileheight: " + tileset.tileheight);
+            trace("\tspacing: " + tileset.spacing);
+            trace("\tmargin: " + tileset.margin);
+
+            var i = tileset.image;
+            trace("\timage: [ fmt:" + i.format + " src:" + i.source + " trans:" + i.trans + " w:" + i.width + " h:" + i.height + "]");
+
+            var terrainTypes = tileset.terrainTypes;
+            if (terrainTypes.length > 0)
+            {
+                trace("\tterraintypes:");
+                for each (var terrain in terrainTypes)
+                {
+                    trace("\t\tterrain: [" + terrain.name + " " + terrain.tile + "]");
+                }
+            }
+
+            var tiles = tileset.tiles;
+            if (tiles.length > 0)
+            {
+                trace("\ttiles:");
+                for each (var tile in tiles)
+                {
+                    var terrainString = "";
+                    for each (var t in tile.terrain)
+                    {
+                        terrainString = terrainString + t + " ";
+                    }
+                    trace("\t\ttile: [ id:" + tile.id + "terrain: " + terrainString + " probability:" + tile.probability + "]");
+                }
+            }
         }
 
         public function onLayerParsed(file:String, layer:TMXLayer):void
         {
             trace("parsed layer:" + layer.name);
-            trace("x: " + layer.x);
-            trace("y: " + layer.y);
-            trace("width: " + layer.width);
-            trace("height: " + layer.height);
-            trace("opacity: " + layer.opacity);
-            trace("visible: " + layer.visible);
+            trace("\tx: " + layer.x);
+            trace("\ty: " + layer.y);
+            trace("\twidth: " + layer.width);
+            trace("\theight: " + layer.height);
+            trace("\topacity: " + layer.opacity);
+            trace("\tvisible: " + layer.visible);
 
             for (var key in layer.properties)
             {
-                trace("properties[" + key + "] = " + layer.properties[key]);
+                trace("\tproperties[" + key + "] = " + layer.properties[key]);
             }
 
             // var x = 0;
@@ -93,19 +135,19 @@ package
                 {
                     case TMXObjectType.RECTANGLE:
                         var rect = object as TMXRectangle;
-                        trace("rect [" + rect.x + " " + rect.y + " " + rect.width + " " + rect.height + "]");
+                        trace("\trect [" + rect.x + " " + rect.y + " " + rect.width + " " + rect.height + "]");
                         break;
                     case TMXObjectType.ELLIPSE:
                         var ellipse = object as TMXEllipse;
-                        trace("ellipse [" + ellipse.x + " " + ellipse.y + " " + ellipse.width + " " + ellipse.height + "]");
+                        trace("\tellipse [" + ellipse.x + " " + ellipse.y + " " + ellipse.width + " " + ellipse.height + "]");
                         break;
                     case TMXObjectType.TILE:
                         var tile = object as TMXTileObject;
-                        trace("tile [" + tile.x + " " + tile.y + " " + tile.gid + "]");
+                        trace("\ttile [" + tile.x + " " + tile.y + " " + tile.gid + "]");
                         break;
                     case TMXObjectType.POLYGON:
                         var poly = object as TMXPolygon;
-                        trace("polygon [" + poly.x + " " + poly.y + "]");
+                        trace("\tpolygon [" + poly.x + " " + poly.y + "]");
                         var point = 0;
                         var str = "";
                         for (point = 0; point < poly.points.length; point += 2)
@@ -116,7 +158,7 @@ package
                         break;
                     case TMXObjectType.POLYLINE:
                         var line = object as TMXPolyLine;
-                        trace("polyline [" + line.x + " " + line.y + "]");
+                        trace("\tpolyline [" + line.x + " " + line.y + "]");
                         str = "";
                         for (point = 0; point < line.points.length; point += 2)
                         {
@@ -133,21 +175,13 @@ package
             trace("parsed map properties:");
             for (var key in properties)
             {
-                trace("properties[" + key + "] = " + properties[key]);
+                trace("\tproperties[" + key + "] = " + properties[key]);
             }
         }
 
-        public function onTMXUpdated(file:String, tmx:TMXDocument):void
+        public function onTMXLoadComplete(file:String, tmx:TMXDocument):void
         {
             trace("finished parsing tmx: " + file);
-
-            trace("version: " + tmx.version);
-            trace("orientation: " + tmx.orientation);
-            trace("width: " + tmx.width);
-            trace("height: " + tmx.height);
-            trace("tileWidth: " + tmx.tileWidth);
-            trace("tileHeight: " + tmx.tileHeight);
-            trace("backgroundcolor: " + tmx.backgroundcolor);
         }
     }
 }
