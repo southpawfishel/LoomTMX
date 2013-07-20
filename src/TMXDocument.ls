@@ -9,6 +9,7 @@ package tmx
     public delegate TMXTilesetParsedCallback(file:String, tileset:TMXTileSet);
     public delegate TMXLayerParsedCallback(file:String, layer:TMXLayer);
     public delegate TMXObjectGroupParsedCallback(file:String, objectGroup:TMXObjectGroup);
+    public delegate TMXImageLayerParsedCallback(file:String, imageLayer:TMXImageLayer);
     public delegate TMXPropertiesParsedCallback(file:String, properties:Dictionary.<String, String>);
 
     public class TMXDocument
@@ -32,6 +33,7 @@ package tmx
         public var onTilesetParsed:TMXTilesetParsedCallback = new TMXTilesetParsedCallback();
         public var onLayerParsed:TMXLayerParsedCallback = new TMXLayerParsedCallback();
         public var onObjectGroupParsed:TMXObjectGroupParsedCallback = new TMXObjectGroupParsedCallback();
+        public var onImageLayerParsed:TMXImageLayerParsedCallback = new TMXImageLayerParsedCallback();
         public var onPropertiesParsed:TMXPropertiesParsedCallback = new TMXPropertiesParsedCallback();
 
         public function TMXDocument(filename:String)
@@ -105,7 +107,8 @@ package tmx
                 }
                 else if (nextChild.getValue() == "imagelayer")
                 {
-                    Debug.assert(false, "imagelayer not yet implemented!");
+                    var imageLayer:TMXImageLayer = new TMXImageLayer(nextChild);
+                    onImageLayerParsed(_filename, imageLayer);
                 }
                 else if (nextChild.getValue() == "properties")
                 {

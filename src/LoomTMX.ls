@@ -34,10 +34,11 @@ package
             label.y = stage.stageHeight / 2 - 100;
             stage.addChild(label);
 
-            var tmx:TMXDocument = new TMXDocument("assets/tiled_examples/desert.tmx");
+            var tmx:TMXDocument = new TMXDocument("assets/tiled_examples/object_test.tmx");
             tmx.onTilesetParsed += onTilesetParsed;
             tmx.onLayerParsed += onLayerParsed;
             tmx.onObjectGroupParsed += onObjectGroupParsed;
+            tmx.onImageLayerParsed += onImageLayerParsed;
             tmx.onPropertiesParsed += onPropertiesParsed;
             tmx.onTMXUpdated += onTMXUpdated;
             tmx.onTMXLoadComplete += onTMXLoadComplete;
@@ -92,7 +93,7 @@ package
                     {
                         terrainString = terrainString + t + " ";
                     }
-                    trace("\t\ttile: [ id:" + tile.id + "terrain: " + terrainString + " probability:" + tile.probability + "]");
+                    trace("\t\ttile: [ id:" + tile.id + " terrain: " + terrainString + " probability:" + tile.probability + "]");
                 }
             }
         }
@@ -149,7 +150,7 @@ package
                         var poly = object as TMXPolygon;
                         trace("\tpolygon [" + poly.x + " " + poly.y + "]");
                         var point = 0;
-                        var str = "";
+                        var str = "\t\t";
                         for (point = 0; point < poly.points.length; point += 2)
                         {
                             str = str + poly.points[point] + "," + poly.points[point+1] + " ";
@@ -159,7 +160,7 @@ package
                     case TMXObjectType.POLYLINE:
                         var line = object as TMXPolyLine;
                         trace("\tpolyline [" + line.x + " " + line.y + "]");
-                        str = "";
+                        str = "\t\t";
                         for (point = 0; point < line.points.length; point += 2)
                         {
                             str = str + line.points[point] + "," + line.points[point+1] + " ";
@@ -168,6 +169,14 @@ package
                         break;
                 }
             }
+        }
+
+        public function onImageLayerParsed(file:String, imageLayer:TMXImageLayer):void
+        {
+            trace("parsed image layer:")
+            var i = imageLayer.image;
+            trace("\timage: [ name:" + imageLayer.name + " src:" + i.source + "]");
+
         }
 
         public function onPropertiesParsed(file:String, properties:Dictionary.<String, String>):void
