@@ -7,7 +7,7 @@ Inspired by [this discussion](http://theengine.co/forums/loom-with-loomscript/to
 
 This is a pretty simple parser for TMX files produced by [Tiled](http://www.mapeditor.org) with a delegate-driven interface for handling the parsing of different elements.
 
-Still very much a WIP, but if you run the provided app and tinker with a it a bit, you'll probably get the gist of it pretty quickly.
+Still very much a WIP, but if you run the provided app ([LoomTMX.ls](https://github.com/southpawfishel/LoomTMX/blob/master/src/LoomTMX.ls)) and tinker with a it a bit, you'll probably get the gist of it pretty quickly.
 
 Still TODO:
 * Finish supporting the rest of the TMX spec that is supported by TiledQt
