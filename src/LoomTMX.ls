@@ -59,7 +59,7 @@ package
             trace("\tbackgroundcolor: " + tmx.backgroundcolor);
         }
 
-        public function onTilesetParsed(file:String, tileset:TMXTileSet):void
+        public function onTilesetParsed(file:String, tileset:TMXTileset):void
         {
             trace("parsed tileset:");
             trace("\tname: " + tileset.name);

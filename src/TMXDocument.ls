@@ -6,7 +6,7 @@ package tmx
 
     public delegate TMXUpdatedCallback(file:String, document:TMXDocument);
     public delegate TMXLoadCompleteCallback(file:String, document:TMXDocument);
-    public delegate TMXTilesetParsedCallback(file:String, tileset:TMXTileSet);
+    public delegate TMXTilesetParsedCallback(file:String, tileset:TMXTileset);
     public delegate TMXLayerParsedCallback(file:String, layer:TMXLayer);
     public delegate TMXObjectGroupParsedCallback(file:String, objectGroup:TMXObjectGroup);
     public delegate TMXImageLayerParsedCallback(file:String, imageLayer:TMXImageLayer);
@@ -27,6 +27,11 @@ package tmx
         public var backgroundcolor:String;
 
         public var properties:Dictionary.<String, String> = {};
+
+        public var tilesets:Vector.<TMXTileset> = [];
+        public var layers:Vector.<TMXLayer> = [];
+        public var objectGroups:Vector.<TMXObjectGroup> = [];
+        public var imageLayers:Vector.<TMXImageLayer> = [];
 
         public var onTMXUpdated:TMXUpdatedCallback = new TMXUpdatedCallback();
         public var onTMXLoadComplete:TMXLoadCompleteCallback = new TMXLoadCompleteCallback();
@@ -92,22 +97,26 @@ package tmx
             {
                 if (nextChild.getValue() == "tileset")
                 {
-                    var tileset:TMXTileSet = new TMXTileSet(_filename, nextChild);
+                    var tileset:TMXTileset = new TMXTileset(_filename, nextChild);
+                    tilesets.pushSingle(tileset);
                     onTilesetParsed(_filename, tileset);
                 }
                 else if (nextChild.getValue() == "layer")
                 {
                     var layer:TMXLayer = new TMXLayer(nextChild, width, height);
+                    layers.pushSingle(layer);
                     onLayerParsed(_filename, layer);
                 }
                 else if (nextChild.getValue() == "objectgroup")
                 {
                     var objectGroup:TMXObjectGroup = new TMXObjectGroup(nextChild);
+                    objectGroups.pushSingle(objectGroup);
                     onObjectGroupParsed(_filename, objectGroup);
                 }
                 else if (nextChild.getValue() == "imagelayer")
                 {
                     var imageLayer:TMXImageLayer = new TMXImageLayer(nextChild);
+                    imageLayers.pushSingle(imageLayer);
                     onImageLayerParsed(_filename, imageLayer);
                 }
                 else if (nextChild.getValue() == "properties")

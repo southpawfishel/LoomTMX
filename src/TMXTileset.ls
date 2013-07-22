@@ -3,7 +3,7 @@ package tmx
     import system.platform.Path;
     import system.xml.*;
 
-    public class TMXTileSet
+    public class TMXTileset
     {
         public var name:String;
         public var firstgid:int;
@@ -21,7 +21,7 @@ package tmx
 
         private var _parentFile:String = null;
 
-        public function TMXTileSet(parentFile:String, element:XMLElement)
+        public function TMXTileset(parentFile:String, element:XMLElement)
         {
             _parentFile = parentFile;
             parseTileSet(element);
