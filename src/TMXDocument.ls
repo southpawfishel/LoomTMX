@@ -39,16 +39,17 @@ package tmx
 
         private var _filename:String = null;
         private var _textAsset:LoomTextAsset = null;
+        private var _tsxTestAssets:Dictionary.<String, LoomTextAsset> = {};
 
         public function TMXDocument(filename:String)
         {
             _filename = filename;
             _textAsset = LoomTextAsset.create(_filename);
+            _textAsset.updateDelegate += onTextAssetUpdated;
         }
 
         public function load():void
         {
-            _textAsset.updateDelegate += onTextAssetUpdated;
             _textAsset.load();
         }
 
@@ -99,6 +100,20 @@ package tmx
                     var tileset:TMXTileset = new TMXTileset(_filename, nextChild);
                     tilesets.pushSingle(tileset);
                     onTilesetParsed(_filename, tileset);
+
+                    if (tileset.sourcePath != null)
+                    {
+                        var tsxAsset = _tsxTestAssets[tileset.sourcePath];
+                        if (tsxAsset == null)
+                        {
+                            tsxAsset = LoomTextAsset.create(tileset.sourcePath);
+                            // TODO: This spits out a warning, but that looks bad.
+                            // Want to ignore the initial load or else we get into a reload loop here.
+                            tsxAsset.load();
+                            tsxAsset.updateDelegate += onTilesetUpdated;
+                            _tsxTestAssets[tileset.sourcePath] = tsxAsset;
+                        }
+                    }
                 }
                 else if (nextChild.getValue() == "layer")
                 {
@@ -128,6 +143,11 @@ package tmx
             }
 
             onTMXLoadComplete(_filename, this);
+        }
+
+        private function onTilesetUpdated(name:String, contents:String):void
+        {
+            load();
         }
     }
 }

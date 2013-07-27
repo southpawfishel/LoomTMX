@@ -6,6 +6,7 @@ package tmx
     public class TMXTileset
     {
         public var name:String;
+        public var sourcePath:String;
         public var firstgid:int;
         public var tilewidth:int;
         public var tileheight:int;
@@ -37,11 +38,10 @@ package tmx
             {
                 var source = sourceAttr.value;
                 var slashIndex = _parentFile.lastIndexOf(Path.getFolderDelimiter());
-                var sourcePath = _parentFile.substr(0, slashIndex+1) + source;
-                var sourceDoc = new XMLDocument();
-                // TODO: Set this up using a loom text asset
-                sourceDoc.loadFile(sourcePath);
+                sourcePath = _parentFile.substr(0, slashIndex+1) + source;
 
+                var sourceDoc = new XMLDocument();
+                sourceDoc.loadFile(sourcePath);
                 parseTileSet(sourceDoc.rootElement());
             }
 
