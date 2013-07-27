@@ -12,5 +12,4 @@ Still very much a WIP, but if you run the provided app ([LoomTMX.ls](https://git
 Still TODO:
 * Parser: support gzip compressed layers
 * Parser: support embedded image data
-* Parser: implement live reload for .tsx tilesets.  These are currently only read when the .tmx is updated
 * Implement a view component that builds itself using the delegate API (perhaps just figure out how to hook this to Loom's built-in TMX support)
