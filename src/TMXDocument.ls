@@ -14,10 +14,6 @@ package tmx
 
     public class TMXDocument
     {
-        private var _filename:String = null;
-        private var _textAsset:LoomTextAsset = null;
-
-        // Map level properties
         public var version:Number;
         public var orientation:String;
         public var width:int;
@@ -40,6 +36,9 @@ package tmx
         public var onObjectGroupParsed:TMXObjectGroupParsedCallback = new TMXObjectGroupParsedCallback();
         public var onImageLayerParsed:TMXImageLayerParsedCallback = new TMXImageLayerParsedCallback();
         public var onPropertiesParsed:TMXPropertiesParsedCallback = new TMXPropertiesParsedCallback();
+
+        private var _filename:String = null;
+        private var _textAsset:LoomTextAsset = null;
 
         public function TMXDocument(filename:String)
         {

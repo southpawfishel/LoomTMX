@@ -173,7 +173,7 @@ package
 
         public function onImageLayerParsed(file:String, imageLayer:TMXImageLayer):void
         {
-            trace("parsed image layer:")
+            trace("parsed image layer:");
             var i = imageLayer.image;
             trace("\timage: [ name:" + imageLayer.name + " src:" + i.source + "]");
 
