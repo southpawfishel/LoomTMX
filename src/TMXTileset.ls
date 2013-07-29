@@ -65,7 +65,7 @@ package tmx
             {
                 if (nextChild.getValue() == "image")
                 {
-                    image = new TMXImage(nextChild);
+                    image = new TMXImage(_parentFile, nextChild);
                 }
                 else if (nextChild.getValue() == "tileoffset")
                 {
@@ -111,13 +111,16 @@ package tmx
         public var width:int;
         public var height:int;
 
-        public function TMXImage(element:XMLElement)
+        public function TMXImage(parentFile:String, element:XMLElement)
         {
             format = element.getAttribute("format");
-            source = element.getAttribute("source");
             trans = element.getAttribute("trans");
             width = element.getNumberAttribute("width") as int;
             height = element.getNumberAttribute("height") as int;
+
+            source = element.getAttribute("source");
+            var slashIndex = parentFile.lastIndexOf(Path.getFolderDelimiter());
+            source = parentFile.substr(0, slashIndex+1) + source;
 
             // TODO: Handle images which include data
         }

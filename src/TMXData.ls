@@ -30,10 +30,6 @@ package tmx
                     Debug.assert(false, "gzip compression not yet supported!");
                 }
 
-                const FLIPPED_HORIZONTALLY_FLAG:int = 0x80000000;
-                const FLIPPED_VERTICALLY_FLAG:int = 0x40000000;
-                const FLIPPED_DIAGONALLY_FLAG:int = 0x20000000;
-
                 for (var i:int = 0; i < bytes.length; i += 4)
                 {
                     var a:int = bytes.readUnsignedByte();
@@ -42,13 +38,6 @@ package tmx
                     var d:int = bytes.readUnsignedByte();
 
                     var gid:int = a | b << 8 | c << 16 | d << 24;
-
-                    // var flipped_horizontally:Boolean = (global_tile_id & FLIPPED_HORIZONTALLY_FLAG);
-                    // var flipped_vertically:Boolean = (global_tile_id & FLIPPED_VERTICALLY_FLAG);
-                    // var flipped_diagonally:Boolean = (global_tile_id & FLIPPED_DIAGONALLY_FLAG);
-                    // // TODO: Do something with these.
-
-                    // gid &= ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
 
                     data.pushSingle(gid);
                 }

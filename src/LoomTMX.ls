@@ -15,25 +15,7 @@ package
             // Comment out this line to turn off automatic scaling.
             stage.scaleMode = StageScaleMode.LETTERBOX;
 
-            // Setup anything else, like UI, or game objects.
-            var bg = new Image(Texture.fromAsset("assets/bg.png"));
-            bg.width = stage.stageWidth;
-            bg.height = stage.stageHeight;
-            stage.addChild(bg);
-            
-            var sprite = new Image(Texture.fromAsset("assets/logo.png"));
-            sprite.center();
-            sprite.x = stage.stageWidth / 2;
-            sprite.y = stage.stageHeight / 2 + 50;
-            stage.addChild(sprite);
-
-            var label = new SimpleLabel("assets/Curse-hd.fnt");
-            label.text = "Hello Loom!";
-            label.center();
-            label.x = stage.stageWidth / 2;
-            label.y = stage.stageHeight / 2 - 100;
-            stage.addChild(label);
-
+            // Load our tmx file and listen for when parts of it are parsed.
             var tmx:TMXDocument = new TMXDocument("assets/tiled_examples/object_test.tmx");
             tmx.onTilesetParsed += onTilesetParsed;
             tmx.onLayerParsed += onLayerParsed;
@@ -42,7 +24,15 @@ package
             tmx.onPropertiesParsed += onPropertiesParsed;
             tmx.onTMXUpdated += onTMXUpdated;
             tmx.onTMXLoadComplete += onTMXLoadComplete;
+
+            // Create a sprite that auto-updates when the map updates.
+            var map:TMXMapSprite = new TMXMapSprite(tmx);
+            stage.addChild(map);
+
             tmx.load();
+
+            // Once the map has loaded, we can access layers by name.
+            map.getImageLayer("image_test").visible = false;
 
         }
 

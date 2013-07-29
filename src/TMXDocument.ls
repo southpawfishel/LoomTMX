@@ -129,7 +129,7 @@ package tmx
                 }
                 else if (nextChild.getValue() == "imagelayer")
                 {
-                    var imageLayer:TMXImageLayer = new TMXImageLayer(nextChild);
+                    var imageLayer:TMXImageLayer = new TMXImageLayer(_filename, nextChild);
                     imageLayers.pushSingle(imageLayer);
                     onImageLayerParsed(_filename, imageLayer);
                 }

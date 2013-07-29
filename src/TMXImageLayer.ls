@@ -11,7 +11,7 @@ package tmx
         public var properties:Dictionary.<String, String> = {};
         public var image:TMXImage = null;
 
-        public function TMXImageLayer(element:XMLElement)
+        public function TMXImageLayer(parentFile:String, element:XMLElement)
         {
             name = element.getAttribute("name");
             var opacityAttr = element.findAttribute("opacity");
@@ -24,7 +24,7 @@ package tmx
             {
                 if (nextChild.getValue() == "image")
                 {
-                    image = new TMXImage(nextChild);
+                    image = new TMXImage(parentFile, nextChild);
                 }
                 else if (nextChild.getValue() == "properties")
                 {
