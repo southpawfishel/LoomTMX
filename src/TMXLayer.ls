@@ -11,7 +11,7 @@ package tmx
         public var height:int;
         public var opacity:Number = 1;
         public var visible:Boolean = true;
-        public var tiles:Vector.<int> = [];
+        public var tiles:Vector.<uint> = [];
 
         public var properties:Dictionary.<String, String> = {};
 

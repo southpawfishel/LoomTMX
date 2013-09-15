@@ -5,7 +5,7 @@ package tmx
 
     class TMXData
     {
-        public var data:Vector.<int> = [];
+        public var data:Vector.<uint> = [];
 
         public function TMXData(element:XMLElement, width:int, height:int)
         {
@@ -32,13 +32,13 @@ package tmx
 
                 for (var i:int = 0; i < bytes.length; i += 4)
                 {
-                    var a:int = bytes.readUnsignedByte();
-                    var b:int = bytes.readUnsignedByte();
-                    var c:int = bytes.readUnsignedByte();
-                    var d:int = bytes.readUnsignedByte();
-
-                    var gid:int = a | b << 8 | c << 16 | d << 24;
-
+                    var a:uint = bytes.readUnsignedByte();
+                    var b:uint = bytes.readUnsignedByte();
+                    var c:uint = bytes.readUnsignedByte();
+                    var d:uint = bytes.readUnsignedByte();
+                    
+                    var gid:uint = a | b << 8 | c << 16 | d << 24;
+                    
                     data.pushSingle(gid);
                 }
             }
@@ -49,7 +49,7 @@ package tmx
                 for each (value in splitValues)
                 {
                     value.trim();
-                    data.pushSingle(value.toNumber() as int);
+                    data.pushSingle(value.toNumber() as uint);
                 }
             }
             else
@@ -59,7 +59,7 @@ package tmx
                 {
                     if (nextChild.getValue() == "tile")
                     {
-                        data.pushSingle(nextChild.getNumberAttribute("gid") as int);
+                        data.pushSingle(nextChild.getNumberAttribute("gid") as uint);
                     }
                     nextChild = nextChild.nextSiblingElement();
                 }
