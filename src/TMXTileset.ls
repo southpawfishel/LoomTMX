@@ -7,7 +7,7 @@ package tmx
     {
         public var name:String;
         public var sourcePath:String;
-        public var firstgid:int;
+        public var firstgid:uint;
         public var tilewidth:int;
         public var tileheight:int;
         public var spacing:int;
@@ -46,7 +46,7 @@ package tmx
             }
 
             var firstgidAttr = element.findAttribute("firstgid");
-            if (firstgidAttr) firstgid = firstgidAttr.numberValue as int;
+            if (firstgidAttr) firstgid = firstgidAttr.numberValue as uint;
 
             var tilewidthAttr = element.findAttribute("tilewidth");
             if (tilewidthAttr) tilewidth = tilewidthAttr.numberValue as int;
@@ -140,13 +140,13 @@ package tmx
 
     public class TMXTile
     {
-        public var id:int;
+        public var id:uint;
         public var terrain:Vector.<int> = [];
         public var probability:Number = 1;
 
         public function TMXTile(element:XMLElement)
         {
-            id = element.getNumberAttribute("id");
+            id = element.getNumberAttribute("id") as uint;
             var probabilityAttr = element.findAttribute("probability");
             probability = probabilityAttr ? probabilityAttr.numberValue : 1.0;
             var terrainAttr = element.findAttribute("terrain");
@@ -164,12 +164,12 @@ package tmx
     public class TMXTerrain
     {
         public var name:String;
-        public var tile:int;
+        public var tile:uint;
 
         public function TMXTerrain(element:XMLElement)
         {
             name = element.getAttribute("name");
-            tile = element.getNumberAttribute("tile") as int;
+            tile = element.getNumberAttribute("tile") as uint;
         }
     }
 }

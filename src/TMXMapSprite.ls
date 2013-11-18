@@ -10,6 +10,8 @@ package tmx
     {
         private var _tileWidth:Number;
         private var _tileHeight:Number;
+        private var _orthogonal:Boolean;
+        private var _isometric:Boolean;
         private var _tileAtlases:Vector.<TextureAtlas> = [];
         private var _layers:Dictionary.<String, Sprite> = {};
         private var _imageLayers:Dictionary.<String, Image> = {};
@@ -41,6 +43,9 @@ package tmx
 
             _tileWidth = tmx.tileWidth;
             _tileHeight = tmx.tileHeight;
+            _orthogonal = tmx.orientation == "orthogonal";
+            _isometric = tmx.orientation == "isometric";
+
         }
 
         private function onTilesetParsed(file:String, tileset:TMXTileset):void
@@ -85,48 +90,109 @@ package tmx
         {
             var layerSprite:Sprite = new Sprite();
 
-            const FLIPPED_HORIZONTALLY_FLAG:int = 0x80000000;
-            const FLIPPED_VERTICALLY_FLAG:int = 0x40000000;
-            const FLIPPED_DIAGONALLY_FLAG:int = 0x20000000;
+            const FLIPPED_HORIZONTALLY_FLAG:uint = 0x80000000;
+            const FLIPPED_VERTICALLY_FLAG:uint = 0x40000000;
+            const FLIPPED_DIAGONALLY_FLAG:uint = 0x20000000;
             var flipped_horizontally:Boolean = false;
             var flipped_vertically:Boolean = false;
             var flipped_diagonally:Boolean = false;
 
             var x:int = 0;
             var y:int = 0;
-            var gid:int = 0;
+            var gid:uint = 0;
             for (y = 0; y < layer.height; ++y)
             {
                 for (x = 0; x < layer.width; ++x)
                 {
                     gid = layer.tiles[(y * layer.width) + x];
 
-                    flipped_horizontally = (gid & FLIPPED_HORIZONTALLY_FLAG) as Boolean;
-                    flipped_vertically = (gid & FLIPPED_VERTICALLY_FLAG) as Boolean;
-                    flipped_diagonally = (gid & FLIPPED_DIAGONALLY_FLAG) as Boolean;
-
+                    flipped_horizontally = (gid & FLIPPED_HORIZONTALLY_FLAG) != 0;
+                    flipped_vertically = (gid & FLIPPED_VERTICALLY_FLAG) != 0;
+                    flipped_diagonally = (gid & FLIPPED_DIAGONALLY_FLAG) != 0;
+                    
                     gid &= ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
-
+                    
                     var tileImage = imageFromGid(gid);
                     if (!tileImage)
                     {
                         continue;
                     }
 
-                    tileImage.x = x * _tileWidth;
-                    tileImage.y = y * _tileHeight;
+                    if(_isometric)
+                    {
+                        tileImage.x = x * _tileWidth/2 - y * _tileWidth/2;
+                        tileImage.y = x * _tileHeight/2 + y * _tileHeight/2;
+                        
+                        if(flipped_vertically && flipped_horizontally && flipped_diagonally)
+                        {
+                            //TODO
+                        }
+                        else if(flipped_vertically && flipped_horizontally)
+                        {
+                            //TODO   
+                        }
+                        else if(flipped_vertically && flipped_diagonally)
+                        {
+                            //TODO
+                        }
+                        else if(flipped_horizontally && flipped_diagonally)
+                        {
+                            //TODO
+                        }
+                        else if (flipped_horizontally)
+                        {
+                            //TODO
+                        }
+                        else if (flipped_vertically)
+                        {
+                            //TODO
+                        }
+                        else if (flipped_diagonally)
+                        {
+                            //TODO
+                        }
+                    }
+                    else
+                    {
+                        tileImage.x = x * _tileWidth;
+                        tileImage.y = y * _tileHeight;
 
-                    if (flipped_horizontally)
-                    {
-                        tileImage.scaleX = -1;
-                    }
-                    else if (flipped_vertically)
-                    {
-                        tileImage.scaleY = -1;
-                    }
-                    else if (flipped_diagonally)
-                    {
-                        tileImage.scaleX = tileImage.scaleY = -1;
+                        //These flipped values only work for orthogonal maps
+                        if(flipped_vertically && flipped_horizontally && flipped_diagonally)
+                        {
+                            tileImage.rotation = 90 * Math.PI / 180;
+                            tileImage.x = x * _tileWidth + _tileWidth;
+                        }
+                        else if(flipped_vertically && flipped_horizontally)
+                        {
+                            tileImage.scaleX = tileImage.scaleY = -1;
+                            tileImage.x = x * _tileWidth + _tileWidth;
+                            tileImage.y = y * _tileHeight + _tileHeight;    
+                        }
+                        else if(flipped_vertically && flipped_diagonally)
+                        {
+                            tileImage.rotation = -90 * Math.PI / 180;
+                            tileImage.y = y * _tileHeight + _tileHeight;
+                        }
+                        else if(flipped_horizontally && flipped_diagonally)
+                        {
+                            tileImage.rotation = 90 * Math.PI / 180;
+                            tileImage.x = x * _tileWidth + _tileWidth;
+                        }
+                        else if (flipped_horizontally)
+                        {
+                            tileImage.scaleX = -1;
+                            tileImage.x = x * _tileWidth + _tileWidth;
+                        }
+                        else if (flipped_vertically)
+                        {
+                            tileImage.scaleY = -1;
+                            tileImage.y = y * _tileHeight + _tileHeight;
+                        }
+                        else if (flipped_diagonally)
+                        {
+                            
+                        }
                     }
 
                     layerSprite.addChild(tileImage);
